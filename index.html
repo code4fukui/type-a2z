@@ -5,15 +5,15 @@
 <h1>めざせ3秒、TypeAtoZ（タイプ A トゥー Z）</h1>
 
 <main id="main">
-	<div id="divview"></div>
-	<script type="module" src="https://code4fukui.github.io/key-board/key-board.js"></script>
-	<key-board id=keyboard></key-board>
+  <div id="divview"></div>
+  <script type="module" src="https://code4fukui.github.io/key-board/key-board.js"></script>
+  <key-board id=keyboard></key-board>
 </main>
 
 <footer>
 <hr>
-App: <a href=https://code4fukui.github.io/type-a2z>src on GitHub</a><br>
-KeyBoard: <a href=https://code4fukui.github.io/key-board/>key-board tag</a><br>
+App: <a href=https://github.com/code4fukui/type-a2z>src on GitHub</a><br>
+KeyBoard: <a href=https://github.com/code4fukui/key-board>key-board tag</a><br>
 Base App: <a href=https://fukuno.jig.jp/2012/qwerty>普通の練習用キーボード（一日一創2012）</a><br>
 Design: <a href=http://cssdeck.com/item/120/apple-keyboard-via-css3>Apple Keyboard via CSS3 | CSSDeck</a> by <a href=http://cssdeck.com/user/kushsolitary target=_blank>kushsolitary</a><br>
 </footer>
@@ -22,101 +22,101 @@ Design: <a href=http://cssdeck.com/item/120/apple-keyboard-via-css3>Apple Keyboa
 import { sleep } from "https://js.sabae.cc/sleep.js";
 
 const show = (s) => {
-	divview.textContent = s;
+  divview.textContent = s;
 };
 let startt = 0;
 const clt = () => {
-	startt = performance.now();
+  startt = performance.now();
 };
 const tick = () => {
-	return performance.now() - startt;
+  return performance.now() - startt;
 };
 const inkey = async () => new Promise((resolve) => {
-	document.body.onkeydown = (e) => {
-		keyboard.pressKey(e.keyCode);
-		resolve(e.keyCode);
-	};
-	document.body.onkeyup = (e) => {
-		keyboard.releaseKey(e.keyCode);
-	};
-	keyboard.onkeydown = (code) => {
-		resolve(code);
-	};
+  document.body.onkeydown = (e) => {
+    keyboard.pressKey(e.keyCode);
+    resolve(e.keyCode);
+  };
+  document.body.onkeyup = (e) => {
+    keyboard.releaseKey(e.keyCode);
+  };
+  keyboard.onkeydown = (code) => {
+    resolve(code);
+  };
 });
 
 // main
 A: for (;;) {
-	// count down
-	for (let i = 3; i > 0; i--) {
-		show(i);
-		await sleep(500);
-	}
+  // count down
+  for (let i = 3; i > 0; i--) {
+    show(i);
+    await sleep(500);
+  }
 
-	// start
-	clt();
-	for (let i = "A".charCodeAt(0); i <= "Z".charCodeAt(0); i++) {
-		const k = keyboard.getElement(i);
-		k.classList.add("red");
-		show(String.fromCharCode(i));
-		for (;;) {
-			const key = await inkey();
-			// restart if esc
-			if (key == 27) {
-				k.classList.remove("red");
-				continue A;
-			}
-			if (key == i) {
-				break;
-			}
-		}
-		k.classList.remove("red");
-	}
-	// show result
-	show((tick() / 1000).toFixed(3) + "sec");
+  // start
+  clt();
+  for (let i = "A".charCodeAt(0); i <= "Z".charCodeAt(0); i++) {
+    const k = keyboard.getElement(i);
+    k.classList.add("red");
+    show(String.fromCharCode(i));
+    for (;;) {
+      const key = await inkey();
+      // restart if esc
+      if (key == 27) {
+        k.classList.remove("red");
+        continue A;
+      }
+      if (key == i) {
+        break;
+      }
+    }
+    k.classList.remove("red");
+  }
+  // show result
+  show((tick() / 1000).toFixed(3) + "sec");
 
-	// wait to retry
-	const key = 13;
-	keyboard.getElement(key).classList.add("red");
-	while (await inkey() != key);
-	keyboard.getElement(key).classList.remove("red");
+  // wait to retry
+  const key = 13;
+  keyboard.getElement(key).classList.add("red");
+  while (await inkey() != key);
+  keyboard.getElement(key).classList.remove("red");
 }
 
 </script>
 <style>
 .red {
-	background-color: #f77;
-	color: #222;
+  background-color: #f77;
+  color: #222;
 }
 #divview {
-	font-size: 400%;
-	padding: .4em;
+  font-size: 400%;
+  padding: .4em;
 }
 
 body {
-	font-family: sans-serif;
-	text-align: center;
+  font-family: sans-serif;
+  text-align: center;
 }
 #main {
-	display: inline-block;
-	width: 100%;
-	padding-top: 20px;
+  display: inline-block;
+  width: 100%;
+  padding-top: 20px;
 }
 #output {
-	width: 100%;
-	text-align: center;
-	color: #aaa;
-	font-size: 80%;
-	margin-top: 10px;
+  width: 100%;
+  text-align: center;
+  color: #aaa;
+  font-size: 80%;
+  margin-top: 10px;
 }
 #text {
-	margin-top: 20px;
-	width: 80%;
+  margin-top: 20px;
+  width: 80%;
 }
 a {
-	color: gray !important;
+  color: gray !important;
 }
 footer {
-	margin-top: 2em;
+  margin-top: 2em;
 }
 </style>
 
